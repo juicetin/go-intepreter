@@ -7,13 +7,13 @@ import "monkey/token"
 
 type Lexer struct {
 	input        string
-	position     int  // current position in input
-	readPosition int  // current reading position in input (after current char)/
+	position     int // current position in input
+	readPosition int // current reading position in input (after current char)/
 
 	// This means we only support single-byte characters, and *not* multi-byte runes!
 	// Can revisit this as a follow-up exercise, in particular after finishing reading 100
 	// go mistakes
-	ch           byte // current char under examination
+	ch byte // current char under examination
 }
 
 func New(input string) *Lexer {
@@ -41,6 +41,20 @@ func (l *Lexer) NextToken() token.Token {
 	switch l.ch {
 	case '=':
 		tok = newToken(token.ASSIGN, l.ch)
+	case '+':
+		tok = newToken(token.PLUS, l.ch)
+	case '-':
+		tok = newToken(token.MINUS, l.ch)
+	case '!':
+		tok = newToken(token.BANG, l.ch)
+	case '/':
+		tok = newToken(token.SLASH, l.ch)
+	case '*':
+		tok = newToken(token.ASTERISK, l.ch)
+	case '<':
+		tok = newToken(token.LT, l.ch)
+	case '>':
+		tok = newToken(token.GT, l.ch)
 	case ';':
 		tok = newToken(token.SEMICOLON, l.ch)
 	case '(':
@@ -53,8 +67,6 @@ func (l *Lexer) NextToken() token.Token {
 		tok = newToken(token.RBRACE, l.ch)
 	case ',':
 		tok = newToken(token.COMMA, l.ch)
-	case '+':
-		tok = newToken(token.PLUS, l.ch)
 	case 0:
 		tok.Literal = ""
 		tok.Type = token.EOF
@@ -91,6 +103,8 @@ func (l *Lexer) readIdentifier() string {
 	return l.input[position:l.position]
 }
 
+// TODO
+// extend Monkey and support hex notation, octal notation, etc.
 func (l *Lexer) readNumber() string {
 	position := l.position
 	for isDigit(l.ch) {
@@ -100,15 +114,14 @@ func (l *Lexer) readNumber() string {
 	return l.input[position:l.position]
 }
 
-
 func isLetter(ch byte) bool {
 	return ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z' || ch == '_'
 }
 
+// TODO - support _ in numbers like in golang - 1_000_000 for number readability
 func isDigit(ch byte) bool {
 	return '0' <= ch && ch <= '9'
 }
-
 
 func newToken(tokenType token.TokenType, ch byte) token.Token {
 	return token.Token{Type: tokenType, Literal: string(ch)}
