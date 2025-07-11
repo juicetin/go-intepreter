@@ -38,7 +38,7 @@ func (l *Lexer) NextToken() token.Token {
 
 	l.skipWhitespace()
 
-	// TODO 
+	// TODO
 	// could abstract the ==/!= handling into a makeTwoCharToken method
 	switch l.ch {
 	case '=':

@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
+	"monkey/repl"
 	"os"
 	"os/user"
-	"monkey/repl"
 )
 
-func main () {
+func main() {
 	user, err := user.Current()
 	if err != nil {
 		panic(err)
